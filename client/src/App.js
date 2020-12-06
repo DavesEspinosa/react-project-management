@@ -2,8 +2,9 @@ import React from "react";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import ProjectList from "./pages/ProjectList";
-import ProjectDetails from './pages/ProjectDetails'
+import ProjectDetails from "./pages/ProjectDetails";
 import Navbar from "./components/Navbar";
+import TaskDetails from "./pages/TaskDetails.jsx";
 
 function App() {
   return (
@@ -14,6 +15,11 @@ function App() {
         {/* ADD */}
         <Route exact path="/projects" component={ProjectList} />
         <Route exact path="/projects/:id" component={ProjectDetails} />
+        <Route
+          exact
+          path="/projects/:id/tasks/:taskId"
+          component={TaskDetails}
+        />
       </Switch>
     </div>
   );

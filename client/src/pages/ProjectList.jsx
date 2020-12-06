@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import AddProject from "./../components/AddProject";
+import service from "./../API/service";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
 
 class ProjectList extends Component {
   state = {
@@ -14,8 +20,9 @@ class ProjectList extends Component {
   }
 
   getAllProjects = () => {
-    axios.get(`http://localhost:5000/api/projects`).then((apiResponse) => {
-      this.setState({ listOfProjects: apiResponse.data });
+    service.allProjects().then((apiResponse) => {
+      console.log("apiResponse :>> ", apiResponse);
+      this.setState({ listOfProjects: apiResponse });
     });
   };
 
@@ -33,8 +40,29 @@ class ProjectList extends Component {
           ) => (
             <div key={project._id} className="project">
               <Link to={`/projects/${project._id}`}>
-                <h3>{project.title}</h3>
-                <p>{project.description} </p>
+                <Card >
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      alt="Contemplative Reptile"
+                      height="140"
+                      image={project.image}
+                      title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {project.title}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {project.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
               </Link>
             </div>
           ))}

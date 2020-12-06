@@ -1,10 +1,11 @@
+require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
 
@@ -37,7 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000"], // <== this will be the URL of our React app (it will be running on port 3000)
+    origin: [process.env.PUBLIC_DOMAIN], // <== this will be the URL of our React app (it will be running on port 3000)
   })
 );
 

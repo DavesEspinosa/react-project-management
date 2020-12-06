@@ -4,23 +4,22 @@ import { withRouter } from "react-router";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 
-
-class EditProject extends Component {
+export class EditTask extends Component {
   state = {
     title: "",
     description: "",
   };
-
   handleFormSubmit = (event) => {
     event.preventDefault();
     const { title, description } = this.state;
-    const { id } = this.props.match.params; // made available by withRouter()
+    console.log("this.props :>> ", this.props);
+    const { id, taskId } = this.props.match.params; // made available by withRouter()
 
     axios
-      .put(`http://localhost:5000/api/projects/${id}`, { title, description })
+      .put(`http://localhost:5000/api/tasks/${taskId}`, { title, description })
       .then(() => {
-        this.props.getTheProject();
-        this.props.history.push("/projects");
+        this.props.getTheTask();
+        this.props.history.push(`/projects/${id}`);
         // after submitting the form, we could also redirect to '/projects'
       })
       .catch((err) => console.log(err));
@@ -51,10 +50,9 @@ class EditProject extends Component {
             value={this.state.description}
             onChange={this.handleChange}
           />
-
           <div>
             <Button
-              style={{ marginTop: "1em", backgroundColor:'green' }}
+              style={{ marginTop: "1em" }}
               type="submit"
               variant="contained"
               color="primary"
@@ -70,7 +68,4 @@ class EditProject extends Component {
   }
 }
 
-// By wrapping EditProject in withRouter,
-// we inject react-router props (match, location, history)
-// to the component that help us to get value from the URL (this.props.match.params)
-export default withRouter(EditProject);
+export default withRouter(EditTask);

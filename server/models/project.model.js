@@ -1,14 +1,19 @@
 //      models/project.model.js
-const mongoose = require('mongoose');
-const Schema   = mongoose.Schema;
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
   title: String,
+  image: {
+    type: String,
+    default: "https://www.esandai.com/upload/users/user-avatar.png",
+  },
+  // image: String,
   description: String,
-  tasks: [{type: Schema.Types.ObjectId, ref: 'Task'}],
+  tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
   // The owner will be added later on
 });
 
-const Project = mongoose.model('Project', projectSchema);
+const Project = mongoose.model("Project", projectSchema);
 
 module.exports = Project;
