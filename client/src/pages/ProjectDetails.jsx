@@ -7,6 +7,16 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import service from "./../API/service";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Collapse from "@material-ui/core/Collapse";
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 class ProjectDetails extends Component {
   state = {
@@ -14,11 +24,18 @@ class ProjectDetails extends Component {
     description: " ",
     image: "",
     tasks: [],
+    expanded: false,
   };
 
   componentDidMount() {
     this.getSingleProject();
   }
+
+  handleExpandClick = () => {
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+  };
 
   getSingleProject = () => {
     const { id } = this.props.match.params;
@@ -27,7 +44,6 @@ class ProjectDetails extends Component {
       .singleProject(id)
       .then((apiResponse) => {
         const theProject = apiResponse;
-        console.log("theproject :>> ", theProject);
         //we added the _id to pass it to the taskdetails
         const { title, description, tasks, _id, image } = theProject;
         this.setState({ title, description, tasks, image, _id });
@@ -53,28 +69,61 @@ class ProjectDetails extends Component {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
           }}
         >
-          <span style={{ marginRight: "2em" }}>
-            {" "}
-            <img
-              style={{ width: "120px", height: "90px" }}
-              src={this.state.image}
-              alt=""
+          <h1>Project Details</h1>
+          <Card style={{ maxWidth: "345px" }}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="project" style={{ backgroundColor: "red" }}>
+                  P
+                </Avatar>
+              }
+              title={this.state.title}
+              //subheader="September 14, 2016"
+            />
+            <CardMedia
+              component="img"
+              alt="Contemplative Reptile"
+              height="140"
+              image={this.state.image}
+              title="Contemplative Reptile"
             />{" "}
-          </span>
-          <div>
-            <h1>Project Details</h1>
-            <h2>{this.state.title}</h2>
-            <h4>{this.state.description}</h4>
-          </div>
-        </div>{" "}
+            <CardActions disableSpacing>
+              {this.state.expanded ? (
+                <IconButton
+                  className="expandOpen"
+                  onClick={this.handleExpandClick}
+                  aria-expanded={this.state.expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              ) : (
+                <IconButton
+                  className="expand"
+                  onClick={this.handleExpandClick}
+                  aria-expanded={this.state.expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              )}
+            </CardActions>
+            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>{this.state.description}</Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
+        </div>
         {/*    // <--- ADD       */}
         <Link to={"/projects"}>
           {" "}
           {/*    // <--- ADD       */}
           <Button
-          style={{marginBottom:'1em'}}
+            style={{ marginBottom: "1em", marginTop: "3em" }}
             variant="contained"
             color="default"
             startIcon={<ArrowBackIosIcon />}

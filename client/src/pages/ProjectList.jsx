@@ -21,7 +21,6 @@ class ProjectList extends Component {
 
   getAllProjects = () => {
     service.allProjects().then((apiResponse) => {
-      console.log("apiResponse :>> ", apiResponse);
       this.setState({ listOfProjects: apiResponse });
     });
   };
